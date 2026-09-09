@@ -2,7 +2,8 @@
 
 [My Notes](notes.md)
 
-A brief description of the application here. This is a test.
+Connect 4
+This application is a multi-player rendition of the classic connect 4 game. 
 
 > [!NOTE]
 > This is a template for your startup application. You must modify this `README.md` file for each phase of your development. You only need to fill in the section for each deliverable when that deliverable is submitted in Canvas. Without completing the section for a deliverable, the TA will not know what to look for when grading your submission. Feel free to add additional information to each deliverable description, but make sure you at least have the list of rubric items and a description of what you did for each item.
@@ -12,13 +13,13 @@ A brief description of the application here. This is a test.
 
 ### Elevator pitch
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Tired of wanting to play a game but having no one around to play with? Our Connect 4 application lets you challenge your friends in real time or compete against an intelligent robot opponent whenever you want. Players can create accounts, save their game statistics and win records, and challenge others online with live gameplay. By combining the classic simplicity of Connect 4 with online multiplayer and AI, our goal is to create a quick, competitive, and accessible game that anyone can enjoy from anywhere.
+
 
 ### Design
 
-![Design image](placeholder.png)
+![Design image](design.png)
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
 ```mermaid
 sequenceDiagram
@@ -29,20 +30,29 @@ sequenceDiagram
 
 ### Key features
 
-- Describe your key feature
-- Describe your key feature
-- Describe your key feature
+- Secure user login and authentication
+- Ability to choose between playing a friend or robot
+- Ability to create and join online games
+- Robot opponent that makes it's own moves
+- Ability to place Connect 4 pieces and track turns
+- Player profile with win, loss history
+- Ability to restart the game and have a new board
+- Ability to log out securely
 
 ### Technologies
 
 I am going to use the required technologies in the following ways.
 
-- **HTML** - Description here
-- **CSS** - Description here
-- **React** - Description here
-- **Service** - Description here
-- **DB/Login** - Description here
-- **WebSocket** - Description here
+- **HTML** - Provides the structure for the login page, game lobby, Connect 4 game board, and player profiles.
+- **CSS** - Styles the game board, buttons, player profiles, and other parts of the application while making it work on different screen sizes.
+- **React** - Provides the login and user interface. Allows the application to update the game board and other information without refreshing the page.
+- **Service** - Backend service with endpoints for:
+    - login
+    - retrieving choices
+    - submitting votes
+    - retrieving vote status
+- **DB/Login** - Stores user accounts, games, game results, and player statistics in a database. Users must be authenticated to play online and their passwords will be securely stored.
+- **WebSocket** - Sends game moves between players in real time so that when one player drops a piece, the other player's game board updates immediately.
 
 ## 🚀 Specification Deliverable
 
