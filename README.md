@@ -19,7 +19,9 @@ Tired of wanting to play a game but having no one around to play with? Our Conne
 
 ![Design image](design.png)
 
+Here is a sequence diagram to show how the people would interact with the backend to make a move.
 
+```mermaid
 sequenceDiagram
     actor Player
     actor Opponent
@@ -27,7 +29,7 @@ sequenceDiagram
     Server-->>Opponent: Send move
     Opponent->>Server: Make a move
     Server-->>Player: Send move
-
+```
 ### Key features
 
 - Secure user login and authentication
