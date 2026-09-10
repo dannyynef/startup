@@ -12,7 +12,7 @@ This application is a multi-player rendition of the classic connect 4 game.
 
 ### Elevator pitch
 
-Tired of wanting to play a game but having no one around to play with? Our Connect 4 application lets you challenge your friends in real time or compete against an intelligent robot opponent whenever you want. Players can create accounts, save their game statistics and win records, and challenge others online with live gameplay. By combining the classic simplicity of Connect 4 with online multiplayer and AI, our goal is to create a quick, competitive, and accessible game that anyone can enjoy from anywhere.
+Tired of wanting to play a game but having no one around to play with? Our Connect 4 application lets you challenge your friends in real time or compete against an intelligent robot opponent whenever you want. Players can create accounts, save their game statistics and win records, and challenge others online with live gameplay. By combining the classic simplicity of Connect 4 with online multiplayer, our goal is to create a quick, competitive, and accessible game that anyone can enjoy from anywhere.
 
 
 ### Design
@@ -54,9 +54,6 @@ I am going to use the required technologies in the following ways.
 - **WebSocket** - Sends game moves between players in real time so that when one player drops a piece, the other player's game board updates immediately.
 
 ## 🚀 Specification Deliverable
-
-> [!NOTE]
-> Fill in this sections as the submission artifact for this deliverable. You can refer to this [example](https://github.com/webprogramming260/startup-example/blob/main/README.md) for inspiration.
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
