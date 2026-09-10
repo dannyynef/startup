@@ -20,12 +20,13 @@ Tired of wanting to play a game but having no one around to play with? Our Conne
 ![Design image](design.png)
 
 
-```mermaid
 sequenceDiagram
-    actor You
-    actor Website
-    You->>Website: Replace this with your design
-```
+    actor Player
+    actor Opponent
+    Player->>Server: Make a move
+    Server-->>Opponent: Send move
+    Opponent->>Server: Make a move
+    Server-->>Player: Send move
 
 ### Key features
 
