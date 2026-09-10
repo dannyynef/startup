@@ -54,6 +54,7 @@ I am going to use the required technologies in the following ways.
     - Retreiving game information
     - Retreiving the users moves
     - Retreiving users statistics
+    - Use the GIPHY API to display relevant reaction GIFs based on whether a player wins, loses, or draws a Connect 4 game: [GIPHY API.](https://developers.giphy.com/docs/api/?utm_source=chatgpt.com)
 - **DB/Login** - Stores user accounts, games, game results, and player statistics in a database. Users must be authenticated to play online and their passwords will be securely stored.
 - **WebSocket** - Sends game moves between players in real time so that when one player drops a piece, the other player's game board updates immediately.
 
