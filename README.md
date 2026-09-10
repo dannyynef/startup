@@ -49,10 +49,11 @@ I am going to use the required technologies in the following ways.
 - **CSS** - Styles the game board, buttons, player profiles, and other parts of the application while making it work on different screen sizes.
 - **React** - Provides the login and user interface. Allows the application to update the game board and other information without refreshing the page.
 - **Service** - Backend service with endpoints for:
-    - login
-    - retrieving choices
-    - submitting votes
-    - retrieving vote status
+    - User login
+    - Creating and joining games
+    - Retreiving game information
+    - Retreiving the users moves
+    - Retreiving users statistics
 - **DB/Login** - Stores user accounts, games, game results, and player statistics in a database. Users must be authenticated to play online and their passwords will be securely stored.
 - **WebSocket** - Sends game moves between players in real time so that when one player drops a piece, the other player's game board updates immediately.
 
