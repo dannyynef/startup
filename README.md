@@ -71,7 +71,7 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 ## 🚀 AWS deliverable
 
-For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed. 
+For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.  
   
 - [x] **Rented EC2 server** - I did not complete this part of the deliverable.
 - [ ] **Leased domain name** - I did not complete this part of the deliverable.
