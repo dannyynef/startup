@@ -82,15 +82,15 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
 - [x] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits)
-- [x] **HTML pages** - I did not complete this part of the deliverable.
-- [x] **Proper HTML element usage** - I did not complete this part of the deliverable.
-- [x] **Links** - I did not complete this part of the deliverable.
-- [x] **Text** - I did not complete this part of the deliverable.
-- [x] **3rd party API placeholder** - I did not complete this part of the deliverable.
-- [x] **Images** - I did not complete this part of the deliverable.
-- [x] **Login placeholder** - I did not complete this part of the deliverable.
-- [x] **DB data placeholder** - I did not complete this part of the deliverable.
-- [x] **WebSocket placeholder** - I did not complete this part of the deliverable.
+- [x] **HTML pages** - The website includes Home, Play, Profile, and About pages.
+- [x] **Proper HTML element usage** - The site uses appropriate HTML elements such as headings, paragraphs, links, forms, buttons, tables, and images.
+- [x] **Links** - Navigation links allow users to move between the different pages of the website.
+- [x] **Text** - he website provides information about the game, instructions, player information, and other relevant content.
+- [x] **3rd party API placeholder** - The GIPHY API will provide reaction GIFs based on whether the player wins, loses, or draws.
+- [x] **Images** - The About page uses an image to visually represent Connect 4.
+- [x] **Login placeholder** - The Home page includes a login form where users can enter their email and password.
+- [x] **DB data placeholder** - The Profile page will eventually store and display player information, game results, and statistics using a database.
+- [x] **WebSocket placeholder** - WebSockets will allow game moves and updates to be communicated between players in real time.
 
 ## 🚀 CSS deliverable
 
