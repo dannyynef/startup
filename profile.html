@@ -9,52 +9,51 @@
 </head>
 	<body class="bg-light text-dark">
 	<header class="bg-dark border-bottom border-warning border-4">
-		<menu>
-			<li><a class="text-light" href="index.html">Home</a></li>
-			<li><a class="text-light" href="play.html">Play</a></li>
-			<li><a class="text-light" href="profile.html">Profile</a></li>
-			<li><a class="text-light" href="about.html">About</a></li>
-		</menu>
+		<nav class="navbar navbar-expand navbar-dark bg-dark site-navbar">
+			<div class="container-fluid">
+				<ul class="navbar-nav flex-row gap-3">
+					<li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+					<li class="nav-item"><a class="nav-link" href="play.html">Play</a></li>
+					<li class="nav-item"><a class="nav-link active" aria-current="page" href="profile.html">Profile</a></li>
+					<li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+				</ul>
+			</div>
+		</nav>
 	</header>
 
-	<main>
-		<h1>Player Profile</h1>
+	<main class="container py-3">
+		<div class="row g-3">
+			<h1 class="col-12 h3 text-center mb-0">Player Profile</h1>
 
-		<section>
-			<h2>Account Information</h2>
-			<p>Username: Player1</p>
-			<p>Email: player1@example.com</p>
-			<p>Member since: September 2026</p>
-			<button type="button" class="btn btn-primary">Edit Account</button>
-		</section>
+			<section class="col-12 col-md-6">
+				<div class="card h-100 shadow-sm">
+					<div class="card-body py-3">
+						<h2 class="h5 card-title">Account Information</h2>
+						<p class="mb-1">Username: Player1</p>
+						<p class="mb-1">Email: player1@example.com</p>
+						<p class="mb-3">Member since: September 2026</p>
+						<button type="button" class="btn btn-primary btn-sm">Edit Account</button>
+					</div>
+				</div>
+			</section>
 
-        <section>
-            <h2>For database usage:</h2>
-            <p>Data for the player will be stored and displayed here.</p>
-        </section>
-
-		<section>
-			<h2>Wins</h2>
-			<p>Total wins: 0</p>
-		</section>
-
-		<section>
-			<h2>Losses</h2>
-			<p>Total losses: 0</p>
-		</section>
-
-		<section>
-			<h2>Statistics</h2>
-			<p>Total games: 0</p>
-			<p>Win percentage: 0%</p>
-			<p>Current win streak: 0</p>
-		</section>
+			<section class="col-12 col-md-6">
+				<div class="card h-100 shadow-sm">
+					<div class="card-body py-3">
+						<h2 class="h5 card-title">Statistics</h2>
+						<p class="mb-1">Total wins: 0</p>
+						<p class="mb-1">Total losses: 0</p>
+						<p class="mb-1">Total games: 0</p>
+						<p class="mb-1">Win percentage: 0%</p>
+						<p class="mb-0">Current win streak: 0</p>
+					</div>
+				</div>
+			</section>
+		</div>
 	</main>
 
-	<footer class="bg-dark text-white-50 border-top border-warning">
-		<hr class="border-warning opacity-100">
+	<footer class="container-fluid d-flex justify-content-between align-items-center bg-dark text-white-50 border-top border-warning">
 		<span class="text-reset">Daniel Nef</span>
-		<br>
 		<a class="text-reset" href="https://github.com/dannyynef/startup">GitHub</a>
 	</footer>
 </body>
