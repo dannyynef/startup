@@ -1,7 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
 body {
   display: flex;
   flex-direction: column;
   min-width: 375px;
+  font-family: 'Poppins', sans-serif;
+}
+
+ .site-navbar {
+  min-height: 80px;
 }
 
 header {
@@ -26,6 +33,10 @@ menu {
   /*  overwrite Bootstrap so the menu does not wrap */
   flex-direction: row !important;
   list-style: none;
+  align-items: center;
+  gap: 1.25rem;
+  margin: 0;
+  padding: 0 1rem;
 }
 
 .navbar-brand {
