@@ -6,110 +6,55 @@
 	<title>Connect 4 | Play</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="play.css">
 </head>
     <body class="bg-light text-dark">
     <header class="bg-dark border-bottom border-warning border-4">
-		<menu>
-            <li><a class="text-light" href="index.html">Home</a></li>
-            <li><a class="text-light" href="play.html">Play</a></li>
-            <li><a class="text-light" href="profile.html">Profile</a></li>
-            <li><a class="text-light" href="about.html">About</a></li>
-		</menu>
+        <nav class="navbar navbar-expand navbar-dark bg-dark site-navbar">
+            <div class="container-fluid">
+                <ul class="navbar-nav flex-row gap-3">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="play.html">Play</a></li>
+                    <li class="nav-item"><a class="nav-link" href="profile.html">Profile</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                </ul>
+            </div>
+        </nav>
 	</header>
 
-	<main>
-		<h1>Play Connect 4</h1>
+    <main class="container-sm text-center">
+        <h1 class="h4 mb-1">Play Connect 4</h1>
 
-		<section>
-			<h2>Game Information</h2>
-			<p>You vs Mystery Player</p>
-			<p>Turn: Your turn</p>
+        <section class="card w-100 text-center shadow-sm">
+            <div class="card-body py-2">
+                <p class="mb-1">You vs Mystery Player</p>
+                <p class="mb-0">Turn: Your turn</p>
+            </div>
 		</section>
 
-		<section>
-			<h2>Game Board</h2>
-            <p>Click the column where you want to place your next piece</p>
-            <section>
-                <h2>Game Reaction</h2>
-                <p>For API Placeholder: Reaction GIFs from GIPHY will appear here based on the outcome of the game.</p>
-            </section>
-			<table>
-				<tbody>
-                <table border="1">
-                <tr>
-                    <td>⚪</td>
-                    <td>⚪</td>
-                    <td>⚪</td>
-                    <td>⚪</td>
-                    <td>⚪</td>
-                    <td>⚪</td>
-                    <td>⚪</td>
-                </tr>
-                <tr>
-                    <td>⚪</td>
-                    <td>⚪</td>
-                    <td>⚪</td>
-                    <td>⚪</td>
-                    <td>⚪</td>
-                    <td>⚪</td>
-                    <td>⚪</td>
-                </tr>
-                <tr>
-                    <td>⚪</td>
-                    <td>⚪</td>
-                    <td>⚪</td>
-                    <td>⚪</td>
-                    <td>⚪</td>
-                    <td>⚪</td>
-                    <td>⚪</td>
-                </tr>
-                <tr>
-                    <td>⚪</td>
-                    <td>⚪</td>
-                    <td>⚪</td>
-                    <td>⚪</td>
-                    <td>⚪</td>
-                    <td>⚪</td>
-                    <td>⚪</td>
-                </tr>
-                <tr>
-                    <td>⚪</td>
-                    <td>⚪</td>
-                    <td>⚪</td>
-                    <td>⚪</td>
-                    <td>⚪</td>
-                    <td>⚪</td>
-                    <td>⚪</td>
-                </tr>
-                <tr>
-                    <td>⚪</td>
-                    <td>⚪</td>
-                    <td>⚪</td>
-                    <td>⚪</td>
-                    <td>⚪</td>
-                    <td>⚪</td>
-                    <td>⚪</td>
-                </tr>
-                </table>
-				</tbody>
-			</table>
+		<section class="game-board-section text-center">
+            <p class="small mb-1">Click the column where you want to place your next piece</p>
+            <table class="connect-four-board">
+                <caption class="visually-hidden">Connect Four board, six rows by seven columns</caption>
+                <tbody>
+                    <tr><td><span class="board-slot" aria-hidden="true"></span></td><td><span class="board-slot" aria-hidden="true"></span></td><td><span class="board-slot" aria-hidden="true"></span></td><td><span class="board-slot" aria-hidden="true"></span></td><td><span class="board-slot" aria-hidden="true"></span></td><td><span class="board-slot" aria-hidden="true"></span></td><td><span class="board-slot" aria-hidden="true"></span></td></tr>
+                    <tr><td><span class="board-slot" aria-hidden="true"></span></td><td><span class="board-slot" aria-hidden="true"></span></td><td><span class="board-slot" aria-hidden="true"></span></td><td><span class="board-slot" aria-hidden="true"></span></td><td><span class="board-slot" aria-hidden="true"></span></td><td><span class="board-slot" aria-hidden="true"></span></td><td><span class="board-slot" aria-hidden="true"></span></td></tr>
+                    <tr><td><span class="board-slot" aria-hidden="true"></span></td><td><span class="board-slot" aria-hidden="true"></span></td><td><span class="board-slot" aria-hidden="true"></span></td><td><span class="board-slot" aria-hidden="true"></span></td><td><span class="board-slot" aria-hidden="true"></span></td><td><span class="board-slot" aria-hidden="true"></span></td><td><span class="board-slot" aria-hidden="true"></span></td></tr>
+                    <tr><td><span class="board-slot" aria-hidden="true"></span></td><td><span class="board-slot" aria-hidden="true"></span></td><td><span class="board-slot" aria-hidden="true"></span></td><td><span class="board-slot" aria-hidden="true"></span></td><td><span class="board-slot" aria-hidden="true"></span></td><td><span class="board-slot" aria-hidden="true"></span></td><td><span class="board-slot" aria-hidden="true"></span></td></tr>
+                    <tr><td><span class="board-slot" aria-hidden="true"></span></td><td><span class="board-slot" aria-hidden="true"></span></td><td><span class="board-slot" aria-hidden="true"></span></td><td><span class="board-slot" aria-hidden="true"></span></td><td><span class="board-slot" aria-hidden="true"></span></td><td><span class="board-slot" aria-hidden="true"></span></td><td><span class="board-slot" aria-hidden="true"></span></td></tr>
+                    <tr><td><span class="board-slot" aria-hidden="true"></span></td><td><span class="board-slot" aria-hidden="true"></span></td><td><span class="board-slot" aria-hidden="true"></span></td><td><span class="board-slot" aria-hidden="true"></span></td><td><span class="board-slot" aria-hidden="true"></span></td><td><span class="board-slot" aria-hidden="true"></span></td><td><span class="board-slot" aria-hidden="true"></span></td></tr>
+                </tbody>
+            </table>
 		</section>
-        <section>
-            <h2>Online Game</h2>
-            <p>For web-socket placeholder: Real-time game updates will appear here when playing against another player.</p>
-        </section>
-
-		<section>
-			<h2>Controls</h2>
+        <section class="text-center py-1">
+            <h2 class="h5 mb-2">Controls</h2>
             <button type="button" class="btn btn-primary">Start Game</button>
             <button type="button" class="btn btn-warning">New Game</button>
 		</section>
 	</main>
 
-    <footer class="bg-dark text-white-50 border-top border-warning">
-        <hr class="border-warning opacity-100">
+    <footer class="container-fluid d-flex justify-content-between align-items-center bg-dark text-white-50 border-top border-warning">
 		<span class="text-reset">Daniel Nef</span>
-		<br>
         <a class="text-reset" href="https://github.com/dannyynef/startup">GitHub</a>
 	</footer>
 </body>

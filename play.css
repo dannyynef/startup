@@ -1,0 +1,32 @@
+ .game-board-section {
+	width: min(100%, 34rem);
+	padding-inline: 1rem;
+}
+
+.connect-four-board {
+	margin: 1rem auto;
+	padding: 0.35rem;
+	border-collapse: separate;
+	border-spacing: 0.25rem;
+	table-layout: fixed;
+	border-radius: 0.75rem;
+	background-color: var(--bs-primary);
+	box-shadow: 0 0.5rem 1rem rgb(30 41 59 / 20%);
+}
+
+.connect-four-board td {
+	width: clamp(2rem, 10vw, 3rem);
+	padding: 0;
+}
+
+.board-slot {
+	display: block;
+	width: 100%;
+	aspect-ratio: 1;
+	border-radius: 50%;
+	background-color: var(--bs-light);
+	box-shadow: inset 0 0.2rem 0.35rem rgb(30 41 59 / 30%),
+		0 0.1rem 0.1rem rgb(255 255 255 / 40%);
+}
+
+
