@@ -29,4 +29,18 @@
 		0 0.1rem 0.1rem rgb(255 255 255 / 40%);
 }
 
+main .btn {
+	transition: transform 150ms ease, box-shadow 150ms ease;
+}
+
+main .btn:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 0.25rem 0.5rem rgb(30 41 59 / 20%);
+}
+
+main .btn:focus-visible {
+	outline: 3px solid var(--bs-warning);
+	outline-offset: 2px;
+}
+
 
