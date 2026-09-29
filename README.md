@@ -96,13 +96,13 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits)
-- [ ] **Visually appealing colors and layout. No overflowing elements.** - I did not complete this part of the deliverable.
-- [ ] **Use of a CSS framework** - I did not complete this part of the deliverable.
-- [ ] **All visual elements styled using CSS** - I did not complete this part of the deliverable.
-- [ ] **Responsive to window resizing using flexbox and/or grid display** - I did not complete this part of the deliverable.
-- [ ] **Use of a imported font** - I did not complete this part of the deliverable.
-- [ ] **Use of different types of selectors including element, class, ID, and pseudo selectors** - I did not complete this part of the deliverable.
+- [X] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits)
+- [X] **Visually appealing colors and layout. No overflowing elements.** - I used a consistent color palette and organized the page layout to keep the website clean and prevent elements from overflowing.
+- [X] **Use of a CSS framework** - I used Bootstrap to style elements such as the header, buttons, forms, and other components.
+- [X] **All visual elements styled using CSS** - I used CSS to control the colors, fonts, spacing, borders, and overall appearance of the website.
+- [x] **Responsive to window resizing using flexbox and/or grid display** - I used Bootstrap's responsive classes and Flexbox to make the layout adjust to different screen sizes.
+- [x] **Use of a imported font** - I imported the Poppins font from Google Fonts and used it throughout the website.
+- [x] **Use of different types of selectors including element, class, ID, and pseudo selectors** - I used element, class, ID, and pseudo-class selectors to style different parts of the website.
 
 ## 🚀 React part 1: Routing deliverable
 
