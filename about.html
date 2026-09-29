@@ -6,31 +6,39 @@
 	<title>Connect 4 | About</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 	<link rel="stylesheet" href="main.css">
+	<link rel="stylesheet" href="about.css">
 </head>
 	<body class="bg-light text-dark">
 	<header class="bg-dark border-bottom border-warning border-4">
-		<menu>
-			<li><a class="text-light" href="index.html">Home</a></li>
-			<li><a class="text-light" href="play.html">Play</a></li>
-			<li><a class="text-light" href="profile.html">Profile</a></li>
-			<li><a class="text-light" href="about.html">About</a></li>
-		</menu>
+		<nav class="navbar navbar-expand navbar-dark bg-dark site-navbar">
+			<div class="container-fluid">
+				<ul class="navbar-nav flex-row gap-3">
+					<li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+					<li class="nav-item"><a class="nav-link" href="play.html">Play</a></li>
+					<li class="nav-item"><a class="nav-link" href="profile.html">Profile</a></li>
+					<li class="nav-item"><a class="nav-link active" aria-current="page" href="about.html">About</a></li>
+				</ul>
+			</div>
+		</nav>
 	</header>
 
-	<main>
-        <section>
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYyp8UF0nqdIXBTivHwFQxHVfQzwlRjGnxt8Dkb9VMFA&s=10" alt="Image of Connect 4" width="300">		</section>
-		<section>
-			<h2>What is Connect 4?</h2>
-			<p>Connect 4 is a two-player strategy game where players take turns dropping colored pieces into a vertical board.</p>
-			<p>The goal is to connect four of your pieces in a row horizontally, vertically, or diagonally before your opponent does.</p>
-		</section>
+	<main class="container py-4">
+		<div class="row justify-content-center align-items-center g-4">
+			<section class="col-12 text-center">
+				<img class="about-image img-fluid rounded shadow-sm" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYyp8UF0nqdIXBTivHwFQxHVfQzwlRjGnxt8Dkb9VMFA&s=10" alt="Image of Connect 4" width="300">
+			</section>
+			<section class="col-12 col-lg-8 mx-auto">
+				<div class="bg-white border rounded shadow-sm p-3 p-md-4">
+					<h2 class="h5 mb-3">What is Connect 4?</h2>
+					<p>Connect 4 is a two-player strategy game where players take turns dropping colored pieces into a vertical board.</p>
+					<p class="mb-0">The goal is to connect four of your pieces in a row horizontally, vertically, or diagonally before your opponent does.</p>
+				</div>
+			</section>
+		</div>
 	</main>
 
-	<footer class="bg-dark text-white-50 border-top border-warning">
-		<hr class="border-warning opacity-100">
+	<footer class="container-fluid d-flex justify-content-between align-items-center bg-dark text-white-50 border-top border-warning">
 		<span class="text-reset">Daniel Nef</span>
-		<br>
 		<a class="text-reset" href="https://github.com/dannyynef/startup">GitHub</a>
 	</footer>
 </body>
