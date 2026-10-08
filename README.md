@@ -108,10 +108,10 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits)
-- [ ] **Bundled using Vite** - I did not complete this part of the deliverable.
-- [ ] **Components** - I did not complete this part of the deliverable.
-- [ ] **Router** - I did not complete this part of the deliverable.
+- [x] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits)
+- [x] **Bundled using Vite** - I configured Vite to run and build the React application. The `index.jsx` entry file renders the App component into `index.html`, and `npm run build` creates the production bundle.
+- [x] **Components** - I converted the Login, Play, Profile, and About views into separate React components with their existing content and styles. The App component contains the shared header, navigation, and footer.
+- [x] **Router** - I used React Router's BrowserRouter, NavLink, Routes, and Route components to navigate between Login (`/`), Play (`/play`), Profile (`/profile`), and About (`/about`) without reloading the page. Unknown routes display a 404 message.
 
 ## 🚀 React part 2: Reactivity deliverable
 
