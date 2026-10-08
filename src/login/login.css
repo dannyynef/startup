@@ -1,0 +1,27 @@
+.login-form {
+  width: 100%;
+  max-width: 28rem;
+}
+
+.login-form .form-control {
+  text-align: left;
+}
+
+.login-form #email,
+.login-form #password {
+  border: 2px solid var(--bs-primary);
+}
+
+.login-form .btn {
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+
+.login-form .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0.25rem 0.5rem rgb(30 41 59 / 20%);
+}
+
+.login-form .btn:focus-visible {
+  outline: 3px solid var(--bs-warning);
+  outline-offset: 2px;
+}
