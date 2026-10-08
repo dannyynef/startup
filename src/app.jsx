@@ -17,16 +17,16 @@ export default function App() {
             <div className="container-fluid">
               <ul className="navbar-nav flex-row gap-3">
                 <li className="nav-item">
-                  <a className="nav-link active" aria-current="page" href="index.html">Home</a>
+                  <NavLink className="nav-link" to="/" end>Home</NavLink>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="play.html">Play</a>
+                  <NavLink className="nav-link" to="/play">Play</NavLink>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="profile.html">Profile</a>
+                  <NavLink className="nav-link" to="/profile">Profile</NavLink>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="about.html">About</a>
+                  <NavLink className="nav-link" to="/about">About</NavLink>
                 </li>
               </ul>
             </div>
