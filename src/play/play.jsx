@@ -14,7 +14,7 @@ export function Play({ user }) {
     setResult(null);
   }
 
-  function dropPiece(column) {
+  const dropPiece = React.useCallback((column) => {
     if (result) return;
     // Search from the bottom so pieces stack upward.
     let row = board.length - 1;
@@ -33,7 +33,24 @@ export function Play({ user }) {
     } else {
       setCurrentPlayer(currentPlayer === 'red' ? 'yellow' : 'red');
     }
-  }
+  }, [board, currentPlayer, result]);
+
+  React.useEffect(() => {
+    if (currentPlayer !== 'yellow' || result !== null) return;
+
+    const availableColumns = board[0]
+      .map((piece, column) => piece === null ? column : null)
+      .filter((column) => column !== null);
+    if (!availableColumns.length) return;
+
+    const timer = setTimeout(() => {
+      const column = availableColumns[Math.floor(Math.random() * availableColumns.length)];
+      dropPiece(column);
+    }, 500);
+
+    // Cancel a pending move when resetting, leaving the page, or changing turns.
+    return () => clearTimeout(timer);
+  }, [board, currentPlayer, result, dropPiece]);
 
   return (
     <main className="container-sm text-center">
@@ -41,12 +58,12 @@ export function Play({ user }) {
 
         <section className="card w-100 text-center shadow-sm">
             <div className="card-body py-2">
-                <p className="mb-1">{user.email} (Red) vs Yellow</p>
+                <p className="mb-1">{user.email} (Red) vs Robot (Yellow)</p>
                 <p className="mb-0" aria-live="polite">{result === 'draw'
                     ? 'Draw! The board is full.'
                     : result
-                      ? `${result === 'red' ? 'Red' : 'Yellow'} wins! ${result === 'red' ? 'Yellow' : 'Red'} loses.`
-                      : `Turn: ${currentPlayer === 'red' ? 'Red' : 'Yellow'}`}</p>
+                      ? result === 'red' ? 'You win!' : 'You lose! Robot wins.'
+                      : currentPlayer === 'red' ? 'Your turn (Red)' : 'Robot is thinking...'}</p>
             </div>
 		</section>
 
@@ -80,8 +97,10 @@ export function Play({ user }) {
                                     type="button"
                                     className="btn btn-outline-primary btn-sm w-100 px-0"
                                     aria-label={`Choose column ${column + 1}`}
-                                    onClick={() => dropPiece(column)}
-                                    disabled={result !== null || piece !== null}
+                                    onClick={() => {
+                                      if (currentPlayer === 'red') dropPiece(column);
+                                    }}
+                                    disabled={result !== null || piece !== null || currentPlayer !== 'red'}
                                 >
                                     &#8593;
                                 </button>
