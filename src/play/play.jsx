@@ -1,7 +1,7 @@
 import React from 'react';
 import './play.css';
 
-export function Play() {
+export function Play({ user }) {
   const [board, setBoard] = React.useState(() =>
     Array.from({ length: 6 }, () => Array(7).fill(null))
   );
@@ -41,7 +41,7 @@ export function Play() {
 
         <section className="card w-100 text-center shadow-sm">
             <div className="card-body py-2">
-                <p className="mb-1">Red vs Yellow</p>
+                <p className="mb-1">{user.email} (Red) vs Yellow</p>
                 <p className="mb-0" aria-live="polite">{result === 'draw'
                     ? 'Draw! The board is full.'
                     : result

@@ -63,8 +63,8 @@ export default function App() {
 
         <Routes>
           <Route path="/" element={<Login user={user} onLogin={setUser} onLogout={() => setUser(null)} />} />
-          <Route path="/play" element={user ? <Play /> : <Navigate to="/" replace />} />
-          <Route path="/profile" element={user ? <Profile /> : <Navigate to="/" replace />} />
+          <Route path="/play" element={user ? <Play user={user} /> : <Navigate to="/" replace />} />
+          <Route path="/profile" element={user ? <Profile user={user} /> : <Navigate to="/" replace />} />
           <Route path="/about" element={<About />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

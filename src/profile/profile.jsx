@@ -1,7 +1,7 @@
 import React from 'react';
 import './profile.css';
 
-export function Profile() {
+export function Profile({ user }) {
   return (
     <main className="container py-3">
       <div className="row g-3">
@@ -11,8 +11,8 @@ export function Profile() {
           <div className="card h-100 shadow-sm">
             <div className="card-body py-3">
               <h2 className="h5 card-title">Account Information</h2>
-              <p className="mb-1">Username: Player1</p>
-              <p className="mb-1">Email: player@example.com</p>
+              <p className="mb-1">Username: {user.email.split('@')[0]}</p>
+              <p className="mb-1">Email: {user.email}</p>
               <p className="mb-3">Member since: September 2026</p>
               <button type="button" className="btn btn-primary btn-sm">
                 Edit Account
