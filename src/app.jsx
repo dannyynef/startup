@@ -13,7 +13,11 @@ export default function App() {
     try {
       const savedUser = JSON.parse(localStorage.getItem('connect4.user'));
       return savedUser && typeof savedUser.email === 'string' && savedUser.email.trim()
-        ? { email: savedUser.email }
+        ? {
+            email: savedUser.email,
+            displayName: typeof savedUser.displayName === 'string' ? savedUser.displayName : '',
+            joined: typeof savedUser.joined === 'string' ? savedUser.joined : '',
+          }
         : null;
     } catch {
       return null;
@@ -64,7 +68,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Login user={user} onLogin={setUser} onLogout={() => setUser(null)} />} />
           <Route path="/play" element={user ? <Play user={user} /> : <Navigate to="/" replace />} />
-          <Route path="/profile" element={user ? <Profile user={user} /> : <Navigate to="/" replace />} />
+          <Route path="/profile" element={user ? <Profile user={user} onUserChange={setUser} /> : <Navigate to="/" replace />} />
           <Route path="/about" element={<About />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

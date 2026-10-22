@@ -74,7 +74,7 @@ export function Play({ user }) {
 
         <section className="card w-100 text-center shadow-sm">
             <div className="card-body py-2">
-                <p className="mb-1">{user.email} (Red) vs Robot (Yellow)</p>
+                <p className="mb-1">{user.displayName || user.email} (Red) vs Robot (Yellow)</p>
                 <p className="mb-0" aria-live="polite">{result === 'draw'
                     ? 'Draw! The board is full.'
                     : result

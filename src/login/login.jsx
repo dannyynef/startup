@@ -47,7 +47,7 @@ export function Login({ user, onLogin, onLogout }) {
         <h1 className="mb-4">Connect4</h1>
         {user ? (
           <div>
-            <p>Welcome, {user.email}!</p>
+            <p>Welcome, {user.displayName || user.email}!</p>
             <div className="d-flex justify-content-center gap-2">
               <Link to="/play" className="btn btn-primary">Play</Link>
               <button type="button" className="btn btn-warning" onClick={onLogout}>Logout</button>
