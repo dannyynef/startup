@@ -72,7 +72,7 @@ export function Profile({ user, onUserChange }) {
               {accountError && <p className="text-danger" role="alert">{accountError}</p>}
               {editing ? (
                 <form onSubmit={saveAccount}>
-                  <label htmlFor="displayName" className="form-label">Display name</label>
+                  <label htmlFor="displayName" className="form-label">Username</label>
                   <input id="displayName" className="form-control mb-2" required maxLength={40}
                     value={displayName} onChange={(event) => setDisplayName(event.target.value)} />
                   <button type="submit" className="btn btn-primary btn-sm me-2">Save</button>

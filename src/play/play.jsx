@@ -10,12 +10,13 @@ export function Play({ user }) {
   const [result, setResult] = React.useState(null);
   const [saveError, setSaveError] = React.useState('');
   const [mode, setMode] = React.useState('robot');
+  const [robotStarted, setRobotStarted] = React.useState(false);
   const [roomCode, setRoomCode] = React.useState('');
   const [joinCode, setJoinCode] = React.useState('');
   const [roomState, setRoomState] = React.useState('idle');
   const [roomError, setRoomError] = React.useState('');
   const opponent = mode === 'robot' ? 'Robot' : 'Mock Friend';
-  const canPlay = mode === 'robot' || roomState === 'ready';
+  const canPlay = mode === 'robot' ? robotStarted : roomState === 'ready';
 
   React.useEffect(() => {
     if (mode !== 'friend' || roomState !== 'waiting') return;
@@ -26,6 +27,7 @@ export function Play({ user }) {
 
   function changeMode(nextMode) {
     resetGame();
+    setRobotStarted(false);
     setMode(nextMode);
     setRoomCode('');
     setJoinCode('');
@@ -113,7 +115,7 @@ export function Play({ user }) {
     <main className="container-sm text-center">
         <h1 className="h4 mb-1">Play Connect 4</h1>
 
-        <section className="card w-100 shadow-sm mb-2" aria-label="Match setup">
+        {!canPlay && <section className="card w-100 shadow-sm mb-2" aria-label="Match setup">
           <div className="card-body py-2">
             <label htmlFor="gameMode" className="form-label">Opponent</label>
             <select id="gameMode" className="form-select mb-2" value={mode}
@@ -121,6 +123,12 @@ export function Play({ user }) {
               <option value="robot">Robot</option>
               <option value="friend">Friend (local mock)</option>
             </select>
+            {mode === 'robot' && !robotStarted && (
+              <button type="button" className="btn btn-primary" onClick={() => {
+                resetGame();
+                setRobotStarted(true);
+              }}>Start Game</button>
+            )}
             {mode === 'friend' && (
               <>
                 <p className="small">Local mock: room codes do not connect browsers yet. A simulated friend joins and makes moves automatically.</p>
@@ -150,8 +158,9 @@ export function Play({ user }) {
               </>
             )}
           </div>
-        </section>
+        </section>}
 
+        {canPlay && <>
         <section className="card w-100 text-center shadow-sm">
             <div className="card-body py-2">
                 <p className="mb-1">{user.displayName || user.email} (Red) vs {opponent} (Yellow)</p>
@@ -210,7 +219,9 @@ export function Play({ user }) {
 		</section>
         <section className="text-center py-1">
             <button type="button" className="btn btn-warning" disabled={!canPlay} onClick={resetGame}>New Game</button>
+            <button type="button" className="btn btn-outline-secondary ms-2" onClick={() => changeMode(mode)}>Leave Match</button>
 		</section>
+        </>}
 	</main>
   );
 }
