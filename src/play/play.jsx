@@ -1,4 +1,5 @@
 import React from 'react';
+import { recordResult } from './statistics';
 import './play.css';
 
 export function Play({ user }) {
@@ -7,8 +8,23 @@ export function Play({ user }) {
   );
   const [currentPlayer, setCurrentPlayer] = React.useState('red');
   const [result, setResult] = React.useState(null);
+  const [saveError, setSaveError] = React.useState('');
+  const resultRecorded = React.useRef(false);
+
+  React.useEffect(() => {
+    if (!result || resultRecorded.current) return;
+    // A ref prevents the same finished game being counted again on a rerender.
+    resultRecorded.current = true;
+    try {
+      recordResult(user.email, result === 'draw' ? 'draw' : result === 'red' ? 'win' : 'loss');
+    } catch {
+      setSaveError('This game result could not be saved. Check browser storage.');
+    }
+  }, [result, user.email]);
 
   function resetGame() {
+    resultRecorded.current = false;
+    setSaveError('');
     setBoard(Array.from({ length: 6 }, () => Array(7).fill(null)));
     setCurrentPlayer('red');
     setResult(null);
@@ -64,6 +80,7 @@ export function Play({ user }) {
                     : result
                       ? result === 'red' ? 'You win!' : 'You lose! Robot wins.'
                       : currentPlayer === 'red' ? 'Your turn (Red)' : 'Robot is thinking...'}</p>
+                {saveError && <p className="text-danger mb-0" role="alert">{saveError}</p>}
             </div>
 		</section>
 
