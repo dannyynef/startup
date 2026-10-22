@@ -9,6 +9,47 @@ export function Play({ user }) {
   const [currentPlayer, setCurrentPlayer] = React.useState('red');
   const [result, setResult] = React.useState(null);
   const [saveError, setSaveError] = React.useState('');
+  const [mode, setMode] = React.useState('robot');
+  const [roomCode, setRoomCode] = React.useState('');
+  const [joinCode, setJoinCode] = React.useState('');
+  const [roomState, setRoomState] = React.useState('idle');
+  const [roomError, setRoomError] = React.useState('');
+  const opponent = mode === 'robot' ? 'Robot' : 'Mock Friend';
+  const canPlay = mode === 'robot' || roomState === 'ready';
+
+  React.useEffect(() => {
+    if (mode !== 'friend' || roomState !== 'waiting') return;
+    // Simulate a future WebSocket event announcing that an opponent joined.
+    const timer = setTimeout(() => setRoomState('ready'), 1500);
+    return () => clearTimeout(timer);
+  }, [mode, roomState, roomCode]);
+
+  function changeMode(nextMode) {
+    resetGame();
+    setMode(nextMode);
+    setRoomCode('');
+    setJoinCode('');
+    setRoomState('idle');
+    setRoomError('');
+  }
+
+  function enterRoom(code) {
+    resetGame();
+    setRoomCode(code);
+    setRoomState('waiting');
+    setRoomError('');
+  }
+
+  function joinRoom(event) {
+    event.preventDefault();
+    const code = joinCode.trim().toUpperCase();
+    if (!/^[A-Z0-9]{6}$/.test(code)) {
+      setRoomError('Enter a six-character room code using letters and numbers.');
+      return;
+    }
+    enterRoom(code);
+  }
+
   const resultRecorded = React.useRef(false);
 
   React.useEffect(() => {
@@ -31,7 +72,7 @@ export function Play({ user }) {
   }
 
   const dropPiece = React.useCallback((column) => {
-    if (result) return;
+    if (result || !canPlay) return;
     // Search from the bottom so pieces stack upward.
     let row = board.length - 1;
     while (row >= 0 && board[row][column] !== null) {
@@ -49,10 +90,10 @@ export function Play({ user }) {
     } else {
       setCurrentPlayer(currentPlayer === 'red' ? 'yellow' : 'red');
     }
-  }, [board, currentPlayer, result]);
+  }, [board, currentPlayer, result, canPlay]);
 
   React.useEffect(() => {
-    if (currentPlayer !== 'yellow' || result !== null) return;
+    if (!canPlay || currentPlayer !== 'yellow' || result !== null) return;
 
     const availableColumns = board[0]
       .map((piece, column) => piece === null ? column : null)
@@ -62,24 +103,64 @@ export function Play({ user }) {
     const timer = setTimeout(() => {
       const column = availableColumns[Math.floor(Math.random() * availableColumns.length)];
       dropPiece(column);
-    }, 500);
+    }, mode === 'friend' ? 1000 : 500);
 
     // Cancel a pending move when resetting, leaving the page, or changing turns.
     return () => clearTimeout(timer);
-  }, [board, currentPlayer, result, dropPiece]);
+  }, [board, currentPlayer, result, dropPiece, canPlay, mode]);
 
   return (
     <main className="container-sm text-center">
         <h1 className="h4 mb-1">Play Connect 4</h1>
 
+        <section className="card w-100 shadow-sm mb-2" aria-label="Match setup">
+          <div className="card-body py-2">
+            <label htmlFor="gameMode" className="form-label">Opponent</label>
+            <select id="gameMode" className="form-select mb-2" value={mode}
+              onChange={(event) => changeMode(event.target.value)}>
+              <option value="robot">Robot</option>
+              <option value="friend">Friend (local mock)</option>
+            </select>
+            {mode === 'friend' && (
+              <>
+                <p className="small">Local mock: room codes do not connect browsers yet. A simulated friend joins and makes moves automatically.</p>
+                {roomState === 'idle' ? (
+                  <>
+                    <button type="button" className="btn btn-primary mb-2" onClick={() => {
+                      const code = Array.from({ length: 6 }, () => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'[Math.floor(Math.random() * 36)]).join('');
+                      enterRoom(code);
+                    }}>Create Room</button>
+                    <form onSubmit={joinRoom}>
+                      <label htmlFor="roomCode" className="form-label">Room code</label>
+                      <div className="d-flex gap-2">
+                        <input id="roomCode" className="form-control" value={joinCode} maxLength={6}
+                          onChange={(event) => setJoinCode(event.target.value.toUpperCase())} placeholder="ABC123" required />
+                        <button type="submit" className="btn btn-primary">Join Room</button>
+                      </div>
+                    </form>
+                  </>
+                ) : (
+                  <>
+                    <p className="mb-1">Room: <strong>{roomCode}</strong></p>
+                    <p role="status">{roomState === 'waiting' ? 'Waiting for a simulated friend...' : 'Mock Friend joined. Match ready!'}</p>
+                    <button type="button" className="btn btn-outline-secondary btn-sm" onClick={() => changeMode('friend')}>Leave Room</button>
+                  </>
+                )}
+                {roomError && <p className="text-danger" role="alert">{roomError}</p>}
+              </>
+            )}
+          </div>
+        </section>
+
         <section className="card w-100 text-center shadow-sm">
             <div className="card-body py-2">
-                <p className="mb-1">{user.displayName || user.email} (Red) vs Robot (Yellow)</p>
+                <p className="mb-1">{user.displayName || user.email} (Red) vs {opponent} (Yellow)</p>
                 <p className="mb-0" aria-live="polite">{result === 'draw'
                     ? 'Draw! The board is full.'
                     : result
-                      ? result === 'red' ? 'You win!' : 'You lose! Robot wins.'
-                      : currentPlayer === 'red' ? 'Your turn (Red)' : 'Robot is thinking...'}</p>
+                      ? result === 'red' ? 'You win!' : `You lose! ${opponent} wins.`
+                      : !canPlay ? 'Create or join a friend room to play.'
+                      : currentPlayer === 'red' ? 'Your turn (Red)' : `${opponent} is thinking...`}</p>
                 {saveError && <p className="text-danger mb-0" role="alert">{saveError}</p>}
             </div>
 		</section>
@@ -115,9 +196,9 @@ export function Play({ user }) {
                                     className="btn btn-outline-primary btn-sm w-100 px-0"
                                     aria-label={`Choose column ${column + 1}`}
                                     onClick={() => {
-                                      if (currentPlayer === 'red') dropPiece(column);
+                                      if (canPlay && currentPlayer === 'red') dropPiece(column);
                                     }}
-                                    disabled={result !== null || piece !== null || currentPlayer !== 'red'}
+                                    disabled={!canPlay || result !== null || piece !== null || currentPlayer !== 'red'}
                                 >
                                     &#8593;
                                 </button>
@@ -128,7 +209,7 @@ export function Play({ user }) {
             </table>
 		</section>
         <section className="text-center py-1">
-            <button type="button" className="btn btn-warning" onClick={resetGame}>New Game</button>
+            <button type="button" className="btn btn-warning" disabled={!canPlay} onClick={resetGame}>New Game</button>
 		</section>
 	</main>
   );
