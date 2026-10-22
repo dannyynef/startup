@@ -9,7 +9,29 @@ import { Profile } from './profile/profile';
 import { About } from './about/about';
 
 export default function App() {
-  const [user, setUser] = React.useState(null);
+  const [user, setUser] = React.useState(() => {
+    try {
+      const savedUser = JSON.parse(localStorage.getItem('connect4.user'));
+      return savedUser && typeof savedUser.email === 'string' && savedUser.email.trim()
+        ? { email: savedUser.email }
+        : null;
+    } catch {
+      return null;
+    }
+  });
+
+  React.useEffect(() => {
+    // Mock session persistence until authentication is handled by the backend.
+    try {
+      if (user) {
+        localStorage.setItem('connect4.user', JSON.stringify(user));
+      } else {
+        localStorage.removeItem('connect4.user');
+      }
+    } catch {
+      // Login still works for this visit if browser storage is unavailable.
+    }
+  }, [user]);
 
   return (
     <BrowserRouter>
