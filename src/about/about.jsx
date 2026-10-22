@@ -1,4 +1,5 @@
 import React from 'react';
+import connectFourImage from '../assets/connect-four.png';
 import './about.css';
 
 export function About() {
@@ -6,7 +7,7 @@ export function About() {
     <main className="container py-4">
       <div className="row justify-content-center align-items-center g-4">
         <section className="col-12 text-center">
-          <img className="about-image img-fluid rounded shadow-sm" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYyp8UF0nqdIXBTivHwFQxHVfQzwlRjGnxt8Dkb9VMFA&s=10" alt="Image of Connect 4" width="300" />
+          <img className="about-image img-fluid rounded shadow-sm" src={connectFourImage} alt="Image of Connect 4" width="300" />
         </section>
         <section className="col-12 col-lg-8 mx-auto">
           <div className="bg-white border rounded shadow-sm p-3 p-md-4">

@@ -171,6 +171,7 @@ export function Play({ user }) {
                       : !canPlay ? 'Create or join a friend room to play.'
                       : currentPlayer === 'red' ? 'Your turn (Red)' : `${opponent} is thinking...`}</p>
                 {saveError && <p className="text-danger mb-0" role="alert">{saveError}</p>}
+                {result && <p className="mt-2 mb-0">(API GIF here)</p>}
             </div>
 		</section>
 
