@@ -2,7 +2,7 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './app.css';
 
-import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, NavLink, Route, Routes } from 'react-router-dom';
 import { Login } from './login/login';
 import { Play } from './play/play';
 import { Profile } from './profile/profile';
@@ -43,12 +43,16 @@ export default function App() {
                 <li className="nav-item">
                   <NavLink className="nav-link" to="/" end>Home</NavLink>
                 </li>
-                <li className="nav-item">
-                  <NavLink className="nav-link" to="/play">Play</NavLink>
-                </li>
-                <li className="nav-item">
-                  <NavLink className="nav-link" to="/profile">Profile</NavLink>
-                </li>
+                {user && (
+                  <>
+                    <li className="nav-item">
+                      <NavLink className="nav-link" to="/play">Play</NavLink>
+                    </li>
+                    <li className="nav-item">
+                      <NavLink className="nav-link" to="/profile">Profile</NavLink>
+                    </li>
+                  </>
+                )}
                 <li className="nav-item">
                   <NavLink className="nav-link" to="/about">About</NavLink>
                 </li>
@@ -59,8 +63,8 @@ export default function App() {
 
         <Routes>
           <Route path="/" element={<Login user={user} onLogin={setUser} onLogout={() => setUser(null)} />} />
-          <Route path="/play" element={<Play />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/play" element={user ? <Play /> : <Navigate to="/" replace />} />
+          <Route path="/profile" element={user ? <Profile /> : <Navigate to="/" replace />} />
           <Route path="/about" element={<About />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
