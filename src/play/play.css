@@ -44,3 +44,11 @@ main .btn:focus-visible {
 }
 
 
+
+.board-slot-red {
+	background-color: var(--bs-danger);
+}
+
+.board-slot-yellow {
+	background-color: var(--bs-warning);
+}
