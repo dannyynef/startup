@@ -117,7 +117,7 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits)
+- [x] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits)
 - [x] **All functionality implemented or mocked out** - Used localStorage to store accounts, sessions, and game statistics. Friend matches are mocked with timers, and the GIF API has a placeholder.
 - [x] **Hooks** - Used `useState` for game and login state and `useEffect` for storage and simulated opponent moves. Used `useRef` to prevent duplicate game results and `useCallback` for the move handler.
 
