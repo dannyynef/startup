@@ -9,6 +9,8 @@ import { Profile } from './profile/profile';
 import { About } from './about/about';
 
 export default function App() {
+  const [user, setUser] = React.useState(null);
+
   return (
     <BrowserRouter>
       <div className="body bg-light text-dark">
@@ -34,7 +36,7 @@ export default function App() {
         </header>
 
         <Routes>
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<Login user={user} onLogin={setUser} onLogout={() => setUser(null)} />} />
           <Route path="/play" element={<Play />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/about" element={<About />} />
