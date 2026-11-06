@@ -9,33 +9,39 @@ import { Profile } from './profile/profile';
 import { About } from './about/about';
 
 export default function App() {
-  const [user, setUser] = React.useState(() => {
-    try {
-      const savedUser = JSON.parse(localStorage.getItem('connect4.user'));
-      return savedUser && typeof savedUser.email === 'string' && savedUser.email.trim()
-        ? {
-            email: savedUser.email,
-            displayName: typeof savedUser.displayName === 'string' ? savedUser.displayName : '',
-            joined: typeof savedUser.joined === 'string' ? savedUser.joined : '',
-          }
-        : null;
-    } catch {
-      return null;
-    }
-  });
+  const [user, setUser] = React.useState(null);
+  const [loading, setLoading] = React.useState(true);
+  const [sessionError, setSessionError] = React.useState('');
 
   React.useEffect(() => {
-    // Mock session persistence until authentication is handled by the backend.
-    try {
-      if (user) {
-        localStorage.setItem('connect4.user', JSON.stringify(user));
-      } else {
-        localStorage.removeItem('connect4.user');
+    const controller = new AbortController();
+    async function checkSession() {
+      try {
+        const response = await fetch('/api/user/me', { signal: controller.signal });
+        if (response.status === 401) {
+          setUser(null);
+        } else if (response.ok) {
+          setUser(await response.json());
+        } else {
+          throw new Error('Session check failed');
+        }
+      } catch (error) {
+        if (!controller.signal.aborted) {
+          setSessionError('Unable to check your session. Please refresh to try again.');
+        }
+      } finally {
+        if (!controller.signal.aborted) setLoading(false);
       }
-    } catch {
-      // Login still works for this visit if browser storage is unavailable.
     }
-  }, [user]);
+    checkSession();
+    return () => controller.abort();
+  }, []);
+
+  async function logout() {
+    const response = await fetch('/api/auth', { method: 'DELETE' });
+    if (!response.ok) throw new Error('Logout failed');
+    setUser(null);
+  }
 
   return (
     <BrowserRouter>
@@ -65,13 +71,17 @@ export default function App() {
           </nav>
         </header>
 
-        <Routes>
-          <Route path="/" element={<Login user={user} onLogin={setUser} onLogout={() => setUser(null)} />} />
+        {loading ? (
+          <main className="container py-4 text-center" role="status">Checking your session...</main>
+        ) : sessionError ? (
+          <main className="container py-4 text-center" role="alert">{sessionError}</main>
+        ) : <Routes>
+          <Route path="/" element={<Login user={user} onLogin={setUser} onLogout={logout} />} />
           <Route path="/play" element={user ? <Play user={user} /> : <Navigate to="/" replace />} />
           <Route path="/profile" element={user ? <Profile user={user} onUserChange={setUser} /> : <Navigate to="/" replace />} />
           <Route path="/about" element={<About />} />
           <Route path="*" element={<NotFound />} />
-        </Routes>
+        </Routes>}
 
         <footer className="container-fluid d-flex justify-content-between align-items-center bg-dark text-white-50 border-top border-warning">
           <span className="text-reset">Daniel Nef</span>
