@@ -1,23 +1,21 @@
-// Replace these localStorage operations with backend requests in a later deliverable.
-export function getStats(email) {
-  const saved = JSON.parse(localStorage.getItem(`connect4.stats.${email}`) || 'null');
-  return saved || { wins: 0, losses: 0, draws: 0, currentWinStreak: 0 };
+// The backend identifies the player using their authentication cookie.
+async function readResponse(response) {
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.msg || 'Unable to access statistics.');
+  return data;
 }
 
-export function recordResult(email, result) {
+export async function getStats(signal) {
+  return readResponse(await fetch('/api/stats', { signal }));
+}
+
+export async function recordResult(result) {
   if (!['win', 'loss', 'draw'].includes(result)) {
     throw new Error('Unknown game result');
   }
-
-  const stats = getStats(email);
-  if (result === 'win') {
-    stats.wins++;
-    stats.currentWinStreak++;
-  } else {
-    if (result === 'loss') stats.losses++;
-    if (result === 'draw') stats.draws++;
-    stats.currentWinStreak = 0;
-  }
-  localStorage.setItem(`connect4.stats.${email}`, JSON.stringify(stats));
-  return stats;
+  return readResponse(await fetch('/api/results', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ result }),
+  }));
 }

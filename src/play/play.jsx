@@ -9,6 +9,7 @@ export function Play({ user }) {
   const [currentPlayer, setCurrentPlayer] = React.useState('red');
   const [result, setResult] = React.useState(null);
   const [saveError, setSaveError] = React.useState('');
+  const [savingResult, setSavingResult] = React.useState(false);
   const [mode, setMode] = React.useState('robot');
   const [robotStarted, setRobotStarted] = React.useState(false);
   const [roomCode, setRoomCode] = React.useState('');
@@ -58,11 +59,10 @@ export function Play({ user }) {
     if (!result || resultRecorded.current) return;
     // A ref prevents the same finished game being counted again on a rerender.
     resultRecorded.current = true;
-    try {
-      recordResult(user.email, result === 'draw' ? 'draw' : result === 'red' ? 'win' : 'loss');
-    } catch {
-      setSaveError('This game result could not be saved. Check browser storage.');
-    }
+    setSavingResult(true);
+    recordResult(result === 'draw' ? 'draw' : result === 'red' ? 'win' : 'loss')
+      .catch((error) => setSaveError(`Game result could not be saved: ${error.message}`))
+      .finally(() => setSavingResult(false));
   }, [result, user.email]);
 
   function resetGame() {
@@ -170,6 +170,7 @@ export function Play({ user }) {
                       ? result === 'red' ? 'You win!' : `You lose! ${opponent} wins.`
                       : !canPlay ? 'Create or join a friend room to play.'
                       : currentPlayer === 'red' ? 'Your turn (Red)' : `${opponent} is thinking...`}</p>
+                {savingResult && <p role="status">Saving game result...</p>}
                 {saveError && <p className="text-danger mb-0" role="alert">{saveError}</p>}
                 {result && <p className="mt-2 mb-0">(API GIF here)</p>}
             </div>
@@ -219,8 +220,8 @@ export function Play({ user }) {
             </table>
 		</section>
         <section className="text-center py-1">
-            <button type="button" className="btn btn-warning" disabled={!canPlay} onClick={resetGame}>New Game</button>
-            <button type="button" className="btn btn-outline-secondary ms-2" onClick={() => changeMode(mode)}>Leave Match</button>
+            <button type="button" className="btn btn-warning" disabled={!canPlay || savingResult} onClick={resetGame}>New Game</button>
+            <button type="button" className="btn btn-outline-secondary ms-2" disabled={savingResult} onClick={() => changeMode(mode)}>Leave Match</button>
 		</section>
         </>}
 	</main>

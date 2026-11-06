@@ -46,13 +46,19 @@ export function Profile({ user, onUserChange }) {
   const [error, setError] = React.useState('');
 
   React.useEffect(() => {
-    try {
-      setStats(getStats(user.email));
-      setError('');
-    } catch {
-      setStats(null);
-      setError('Unable to load your saved statistics. Check browser storage.');
-    }
+    const controller = new AbortController();
+    setStats(null);
+    setError('');
+    getStats(controller.signal)
+      .then((savedStats) => {
+        if (!controller.signal.aborted) setStats(savedStats);
+      })
+      .catch((error) => {
+        if (!controller.signal.aborted) {
+          setError(`Unable to load statistics: ${error.message}`);
+        }
+      });
+    return () => controller.abort();
   }, [user.email]);
 
   const totalGames = stats ? stats.wins + stats.losses + stats.draws : 0;
