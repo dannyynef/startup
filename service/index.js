@@ -65,6 +65,36 @@ app.put('/api/user/me', async (req, res) => {
   res.send(publicProfile(user));
 });
 
+// Statistics belong to the authenticated user, not an email supplied by the client.
+async function requireAuth(req, res, next) {
+  const user = await getUser('token', req.cookies.token);
+  if (!user) return res.status(401).send({ msg: 'Unauthorized' });
+  req.user = user;
+  next();
+}
+
+app.get('/api/stats', requireAuth, (req, res) => {
+  res.send(req.user.stats);
+});
+
+app.post('/api/results', requireAuth, (req, res) => {
+  const result = req.body?.result;
+  if (!['win', 'loss', 'draw'].includes(result)) {
+    return res.status(400).send({ msg: 'Result must be win, loss, or draw.' });
+  }
+
+  const stats = req.user.stats;
+  if (result === 'win') {
+    stats.wins++;
+    stats.currentWinStreak++;
+  } else {
+    if (result === 'loss') stats.losses++;
+    if (result === 'draw') stats.draws++;
+    stats.currentWinStreak = 0;
+  }
+  res.send(stats);
+});
+
 // Explicitly omit password hashes and authentication tokens from responses.
 function publicProfile(user) {
   return { email: user.email, displayName: user.displayName, joined: user.joined };
@@ -80,6 +110,7 @@ async function createUser(email, password) {
     password: passwordHash,
     displayName: email.split('@')[0],
     joined: new Date().toISOString(),
+    stats: { wins: 0, losses: 0, draws: 0, currentWinStreak: 0 },
   };
 
   users.push(user);
