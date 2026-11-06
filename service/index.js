@@ -14,7 +14,7 @@ app.post('/api/auth', async (req, res) => {
     const user = await createUser(req.body.email, req.body.password);
     setAuthCookie(res, user);
 
-    res.send({ email: user.email });
+    res.send(publicProfile(user));
   }
 });
 
@@ -23,7 +23,7 @@ app.put('/api/auth', async (req, res) => {
   if (user && (await bcrypt.compare(req.body.password, user.password))) {
     setAuthCookie(res, user);
 
-    res.send({ email: user.email });
+    res.send(publicProfile(user));
   } else {
     res.status(401).send({ msg: 'Unauthorized' });
   }
@@ -43,11 +43,32 @@ app.get('/api/user/me', async (req, res) => {
   const token = req.cookies['token'];
   const user = await getUser('token', token);
   if (user) {
-    res.send({ email: user.email });
+    res.send(publicProfile(user));
   } else {
     res.status(401).send({ msg: 'Unauthorized' });
   }
 });
+
+// Authenticate profile changes using the cookie, never a client-supplied email.
+app.put('/api/user/me', async (req, res) => {
+  const user = await getUser('token', req.cookies.token);
+  if (!user) {
+    return res.status(401).send({ msg: 'Unauthorized' });
+  }
+
+  const displayName = req.body?.displayName;
+  if (typeof displayName !== 'string' || !displayName.trim() || displayName.trim().length > 40) {
+    return res.status(400).send({ msg: 'Username must contain 1 to 40 characters.' });
+  }
+
+  user.displayName = displayName.trim();
+  res.send(publicProfile(user));
+});
+
+// Explicitly omit password hashes and authentication tokens from responses.
+function publicProfile(user) {
+  return { email: user.email, displayName: user.displayName, joined: user.joined };
+}
 
 const users = [];
 
@@ -57,6 +78,8 @@ async function createUser(email, password) {
   const user = {
     email: email,
     password: passwordHash,
+    displayName: email.split('@')[0],
+    joined: new Date().toISOString(),
   };
 
   users.push(user);
