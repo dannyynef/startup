@@ -126,13 +126,13 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
 - [ ] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits)
-- [ ] **Node.js/Express HTTP service** - I did not complete this part of the deliverable.
-- [ ] **Static middleware for frontend** - I did not complete this part of the deliverable.
-- [ ] **Calls to third party endpoints** - I did not complete this part of the deliverable.
-- [ ] **Backend service endpoints** - I did not complete this part of the deliverable.
-- [ ] **Frontend calls service endpoints** - I did not complete this part of the deliverable.
-- [ ] **Supports registration, login, logout, and restricted endpoint** - I did not complete this part of the deliverable.
-- [ ] **Uses BCrypt to hash passwords** - I did not complete this part of the deliverable.
+- [x] **Node.js/Express HTTP service** - Created a Node.js and Express backend in `service/index.js` that defaults to port 4000, with a Vite proxy for local API requests.
+- [x] **Static middleware for frontend** - Added Express static middleware to serve the bundled frontend from `public`, with a fallback for React routes. Added `deployService.sh` to package and deploy both applications.
+- [x] **Calls to third party endpoints** - The About page fetches a random quote and author from DummyJSON each time it opens, with loading and error messages.
+- [x] **Backend service endpoints** - Added endpoints for authentication, profile retrieval and username updates, statistics, and game results. Accounts and statistics are stored in server memory for this deliverable.
+- [x] **Frontend calls service endpoints** - React uses fetch to create accounts, log in and out, restore sessions, edit usernames, save results, and load statistics.
+- [x] **Supports registration, login, logout, and restricted endpoint** - Authentication uses UUID tokens in secure, HTTP-only cookies. Profile updates and statistics endpoints require a valid token, and logout invalidates it.
+- [x] **Uses BCrypt to hash passwords** - Used `bcryptjs` to hash passwords during registration and compare passwords during login without returning hashes to the frontend.
 
 ## 🚀 DB deliverable
 
