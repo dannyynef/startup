@@ -172,7 +172,6 @@ export function Play({ user }) {
                       : currentPlayer === 'red' ? 'Your turn (Red)' : `${opponent} is thinking...`}</p>
                 {savingResult && <p role="status">Saving game result...</p>}
                 {saveError && <p className="text-danger mb-0" role="alert">{saveError}</p>}
-                {result && <p className="mt-2 mb-0">(API GIF here)</p>}
             </div>
 		</section>
 
