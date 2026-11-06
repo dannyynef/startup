@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('node:path');
 const app = express();
 const cookieParser = require('cookie-parser');
 const uuid = require('uuid');
@@ -139,6 +140,21 @@ function clearAuthCookie(res, user) {
   delete user.token;
   res.clearCookie('token');
 }
+
+// Keep unknown API requests from falling through to the React application.
+app.use('/api', (req, res) => {
+  res.status(404).send({ msg: 'API endpoint not found' });
+});
+
+const publicDirectory = path.join(__dirname, 'public');
+app.use(express.static(publicDirectory));
+
+// React Router chooses the view when a frontend URL is opened directly.
+app.get(/.*/, (req, res, next) => {
+  res.sendFile(path.join(publicDirectory, 'index.html'), (error) => {
+    if (error) next(error);
+  });
+});
 
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 app.listen(port, function () {
