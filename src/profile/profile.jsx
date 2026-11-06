@@ -6,38 +6,39 @@ export function Profile({ user, onUserChange }) {
   const [editing, setEditing] = React.useState(false);
   const [displayName, setDisplayName] = React.useState(user.displayName || user.email.split('@')[0]);
   const [accountError, setAccountError] = React.useState('');
-  const [account, setAccount] = React.useState(user);
+  const [saving, setSaving] = React.useState(false);
 
-  React.useEffect(() => {
-    try {
-      const accounts = JSON.parse(localStorage.getItem('connect4.accounts') || '{}');
-      setAccount({ ...user, ...(Object.hasOwn(accounts, user.email) ? accounts[user.email] : {}) });
-    } catch {
-      setAccountError('Unable to load your account details.');
-    }
-  }, [user]);
-
-  function saveAccount(event) {
+  async function saveAccount(event) {
     event.preventDefault();
+    if (saving) return;
     if (!displayName.trim()) {
-      setAccountError('Please enter a display name.');
+      setAccountError('Please enter a username.');
       return;
     }
+    setAccountError('');
+    setSaving(true);
     try {
-      const accounts = JSON.parse(localStorage.getItem('connect4.accounts') || '{}');
-      const updated = { ...account, email: user.email, displayName: displayName.trim() };
-      accounts[user.email] = updated;
-      localStorage.setItem('connect4.accounts', JSON.stringify(accounts));
+      const response = await fetch('/api/user/me', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ displayName: displayName.trim() }),
+      });
+      const updated = await response.json();
+      if (!response.ok) {
+        setAccountError(updated.msg || 'Unable to save your account.');
+        return;
+      }
       onUserChange(updated);
-      setAccountError('');
       setEditing(false);
     } catch {
-      setAccountError('Unable to save your account. Check browser storage.');
+      setAccountError('Unable to connect to the server. Please try again.');
+    } finally {
+      setSaving(false);
     }
   }
 
-  const joinedDate = new Date(account.joined);
-  const memberSince = account.joined && !Number.isNaN(joinedDate.getTime())
+  const joinedDate = new Date(user.joined);
+  const memberSince = user.joined && !Number.isNaN(joinedDate.getTime())
     ? joinedDate.toLocaleDateString(undefined, { month: 'long', year: 'numeric' })
     : 'Unknown';
 
@@ -66,24 +67,24 @@ export function Profile({ user, onUserChange }) {
           <div className="card h-100 shadow-sm">
             <div className="card-body py-3">
               <h2 className="h5 card-title">Account Information</h2>
-              <p className="mb-1">Username: {account.displayName || user.email.split('@')[0]}</p>
+              <p className="mb-1">Username: {user.displayName || user.email.split('@')[0]}</p>
               <p className="mb-1">Email: {user.email}</p>
               <p className="mb-3">Member since: {memberSince}</p>
               {accountError && <p className="text-danger" role="alert">{accountError}</p>}
               {editing ? (
                 <form onSubmit={saveAccount}>
                   <label htmlFor="displayName" className="form-label">Username</label>
-                  <input id="displayName" className="form-control mb-2" required maxLength={40}
+                  <input id="displayName" className="form-control mb-2" required maxLength={40} disabled={saving}
                     value={displayName} onChange={(event) => setDisplayName(event.target.value)} />
-                  <button type="submit" className="btn btn-primary btn-sm me-2">Save</button>
-                  <button type="button" className="btn btn-secondary btn-sm" onClick={() => {
+                  <button type="submit" disabled={saving} className="btn btn-primary btn-sm me-2">{saving ? 'Saving...' : 'Save'}</button>
+                  <button type="button" disabled={saving} className="btn btn-secondary btn-sm" onClick={() => {
                     setEditing(false);
                     setAccountError('');
                   }}>Cancel</button>
                 </form>
               ) : (
                 <button type="button" className="btn btn-primary btn-sm" onClick={() => {
-                  setDisplayName(account.displayName || user.email.split('@')[0]);
+                  setDisplayName(user.displayName || user.email.split('@')[0]);
                   setAccountError('');
                   setEditing(true);
                 }}>Edit Account</button>
