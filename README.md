@@ -125,7 +125,7 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits)
+- [x] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits)
 - [x] **Node.js/Express HTTP service** - Created a Node.js and Express backend in `service/index.js` that defaults to port 4000, with a Vite proxy for local API requests.
 - [x] **Static middleware for frontend** - Added Express static middleware to serve the bundled frontend from `public`, with a fallback for React routes. Added `deployService.sh` to package and deploy both applications.
 - [x] **Calls to third party endpoints** - The About page fetches a random quote and author from DummyJSON each time it opens, with loading and error messages.
