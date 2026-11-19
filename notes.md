@@ -63,3 +63,10 @@ Interesting things I have learned about React
 - Each result uses one atomic `findOneAndUpdate` operation with `$inc` and, when needed, `$set`. Concurrent submissions cannot overwrite each other's counters.
 - The endpoint returns the saved statistics, and profile statistics are read from the authenticated MongoDB account. Client-supplied emails cannot choose which account gets updated.
 - The Atlas integration test checks all three outcomes, win streaks, invalid and unauthenticated submissions, ten simultaneous wins, and statistics after a fresh login.
+
+## Database persistence verification
+
+- Expanded and renamed the integration test to `service/test/database.integration.test.js`. Run it with `npm run test:integration` from `service`.
+- The test now stops the backend and starts a new process, then confirms that the saved token, username, and statistics still work. It also logs in to the saved account after the restart.
+- Verified password hashing, duplicate-account rejection, normalized login emails, wrong passwords, unknown accounts, and invalid tokens against Atlas.
+- The complete integration check passed, and the temporary account was removed. The frontend production build also passed, with React Router module directive warnings.
