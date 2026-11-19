@@ -4,6 +4,7 @@ const app = express();
 const cookieParser = require('cookie-parser');
 const uuid = require('uuid');
 const bcrypt = require('bcryptjs');
+const DB = require('./database');
 
 app.use(express.json());
 app.use(cookieParser());
@@ -157,6 +158,12 @@ app.get(/.*/, (req, res, next) => {
 });
 
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
-app.listen(port, function () {
-  console.log(`Listening on port ${port}`);
+DB.connect().then(() => {
+  app.listen(port, function () {
+    console.log(`Listening on port ${port}`);
+  });
+}).catch(() => {
+  // Keep database credentials and connection strings out of the logs.
+  console.error('Unable to connect to MongoDB. Check dbConfig.json and Atlas network access.');
+  process.exit(1);
 });

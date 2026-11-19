@@ -22,3 +22,10 @@ Interesting things I have learned about HTML
 ## React
 
 Interesting things I have learned about React
+
+## MongoDB connection
+
+- The backend loads its Atlas credentials from `service/dbConfig.json`, which is ignored by Git.
+- The `connect4` database keeps startup data separate from Simon data in the same Atlas cluster.
+- The backend connects and pings MongoDB before accepting HTTP requests. A failed connection stops startup without logging credentials.
+- Account and statistics storage will be moved to MongoDB in the following steps.
