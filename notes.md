@@ -43,3 +43,10 @@ Interesting things I have learned about React
 - The in-memory user array is removed. Accounts and authentication tokens can now be retrieved after a backend restart.
 - Logout removes the stored token and clears the cookie. This was moved forward from the logout step so that switching token lookups to MongoDB does not leave logged-out tokens valid.
 - Profile edits and game statistics still need their database writes in the later steps.
+
+## MongoDB logout verification
+
+- Run `npm run test:integration` from `service` to test logout against the Atlas database configured in `dbConfig.json`.
+- The test starts a separate backend on an available port and creates a temporary account. It checks that logout removes the token from MongoDB, clears the cookie, and makes the old token fail on session and statistics endpoints.
+- Repeated logout succeeds, and a fresh login creates a different token that can access protected endpoints. The old token remains invalid.
+- The integration test passed against Atlas. It removes its temporary account and stops its backend afterward.

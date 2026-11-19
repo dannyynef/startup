@@ -170,8 +170,8 @@ app.get(/.*/, (req, res, next) => {
 
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 DB.connect().then(() => {
-  app.listen(port, function () {
-    console.log(`Listening on port ${port}`);
+  const server = app.listen(port, function () {
+    console.log(`Listening on port ${server.address().port}`);
   });
 }).catch(() => {
   // Keep database credentials and connection strings out of the logs.
