@@ -10,13 +10,27 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.post('/api/auth', async (req, res) => {
-  if (await getUser('email', req.body.email)) {
-    res.status(409).send({ msg: 'Existing user' });
-  } else {
-    const user = await createUser(req.body.email, req.body.password);
+  const { email, password } = req.body || {};
+  if (typeof email !== 'string' || !email.trim() || typeof password !== 'string' || !password) {
+    return res.status(400).send({ msg: 'Email and password are required.' });
+  }
+
+  const normalizedEmail = email.trim().toLowerCase();
+  try {
+    if (await DB.getUser(normalizedEmail)) {
+      return res.status(409).send({ msg: 'Existing user' });
+    }
+
+    const user = await createUser(normalizedEmail, password);
     setAuthCookie(res, user);
 
     res.send(publicProfile(user));
+  } catch (error) {
+    // The unique email index also handles simultaneous registration attempts.
+    if (error.code === 11000) {
+      return res.status(409).send({ msg: 'Existing user' });
+    }
+    res.status(500).send({ msg: 'Unable to create account.' });
   }
 });
 
@@ -115,6 +129,8 @@ async function createUser(email, password) {
     stats: { wins: 0, losses: 0, draws: 0, currentWinStreak: 0 },
   };
 
+  await DB.addUser(user);
+  // Keep existing login and session behavior until database authentication is added.
   users.push(user);
 
   return user;

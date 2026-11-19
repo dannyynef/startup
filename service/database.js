@@ -6,11 +6,13 @@ const password = encodeURIComponent(config.password);
 const url = `mongodb+srv://${userName}:${password}@${config.hostname}`;
 const client = new MongoClient(url, { serverSelectionTimeoutMS: 10000 });
 const db = client.db('connect4');
+const userCollection = db.collection('user');
 
 async function connect() {
   try {
     await client.connect();
     await db.command({ ping: 1 });
+    await userCollection.createIndex({ email: 1 }, { unique: true });
     console.log('Connected to the connect4 database');
   } catch (error) {
     await client.close();
@@ -18,4 +20,12 @@ async function connect() {
   }
 }
 
-module.exports = { connect, db };
+function getUser(email) {
+  return userCollection.findOne({ email });
+}
+
+async function addUser(user) {
+  await userCollection.insertOne(user);
+}
+
+module.exports = { connect, db, getUser, addUser };

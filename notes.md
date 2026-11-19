@@ -29,3 +29,9 @@ Interesting things I have learned about React
 - The `connect4` database keeps startup data separate from Simon data in the same Atlas cluster.
 - The backend connects and pings MongoDB before accepting HTTP requests. A failed connection stops startup without logging credentials.
 - Account and statistics storage will be moved to MongoDB in the following steps.
+
+## MongoDB registration
+
+- Registration checks the MongoDB `user` collection for an existing email and saves new accounts with BCrypt password hashes, profile fields, and initial statistics.
+- Emails are trimmed and lowercased. A unique email index prevents duplicate accounts, including simultaneous registration attempts.
+- Login and sessions still use the temporary in-memory array until the next step. Registered accounts are saved in MongoDB, but logging in after a restart will work once database authentication is added.
