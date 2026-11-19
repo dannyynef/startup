@@ -99,21 +99,14 @@ app.get('/api/stats', requireAuth, (req, res) => {
   res.send(req.user.stats);
 });
 
-app.post('/api/results', requireAuth, (req, res) => {
+app.post('/api/results', requireAuth, async (req, res) => {
   const result = req.body?.result;
   if (!['win', 'loss', 'draw'].includes(result)) {
     return res.status(400).send({ msg: 'Result must be win, loss, or draw.' });
   }
 
-  const stats = req.user.stats;
-  if (result === 'win') {
-    stats.wins++;
-    stats.currentWinStreak++;
-  } else {
-    if (result === 'loss') stats.losses++;
-    if (result === 'draw') stats.draws++;
-    stats.currentWinStreak = 0;
-  }
+  const stats = await DB.recordResult(req.user.email, result);
+  if (!stats) return res.status(401).send({ msg: 'Unauthorized' });
   res.send(stats);
 });
 

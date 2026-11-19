@@ -56,3 +56,10 @@ Interesting things I have learned about React
 - Username edits now update the authenticated account in MongoDB before the server confirms the change. The client cannot choose another account by sending an email.
 - Username validation still requires 1 to 40 characters after trimming. The database update changes only `displayName`, preserving credentials and statistics.
 - The Atlas integration check now verifies the saved username directly in MongoDB, through a fresh profile request, and after logging out and logging back in. It also checks invalid and unauthenticated edits.
+
+## MongoDB game statistics
+
+- Game results now update the authenticated user's statistics in MongoDB. Wins increment the win streak; losses and draws reset it to zero.
+- Each result uses one atomic `findOneAndUpdate` operation with `$inc` and, when needed, `$set`. Concurrent submissions cannot overwrite each other's counters.
+- The endpoint returns the saved statistics, and profile statistics are read from the authenticated MongoDB account. Client-supplied emails cannot choose which account gets updated.
+- The Atlas integration test checks all three outcomes, win streaks, invalid and unauthenticated submissions, ten simultaneous wins, and statistics after a fresh login.

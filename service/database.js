@@ -44,4 +44,15 @@ async function updateDisplayName(email, displayName) {
   await userCollection.updateOne({ email }, { $set: { displayName } });
 }
 
-module.exports = { connect, db, getUser, addUser, getUserByToken, setUserToken, removeUserToken, updateDisplayName };
+async function recordResult(email, result) {
+  const update = result === 'win'
+    ? { $inc: { 'stats.wins': 1, 'stats.currentWinStreak': 1 } }
+    : {
+        $inc: { [result === 'loss' ? 'stats.losses' : 'stats.draws']: 1 },
+        $set: { 'stats.currentWinStreak': 0 },
+      };
+  const user = await userCollection.findOneAndUpdate({ email }, update, { returnDocument: 'after' });
+  return user?.stats;
+}
+
+module.exports = { connect, db, getUser, addUser, getUserByToken, setUserToken, removeUserToken, updateDisplayName, recordResult };

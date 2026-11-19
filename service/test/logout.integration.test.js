@@ -8,7 +8,7 @@ const { MongoClient } = require('mongodb');
 const config = require('../dbConfig.json');
 
 // Uses the configured Atlas database and deletes only the account created here.
-test('profile changes persist and logout invalidates the MongoDB session', { timeout: 60000 }, async (t) => {
+test('profiles and statistics persist and logout invalidates the MongoDB session', { timeout: 60000 }, async (t) => {
   const url = `mongodb+srv://${encodeURIComponent(config.userName)}:${encodeURIComponent(config.password)}@${config.hostname}`;
   const client = new MongoClient(url, { serverSelectionTimeoutMS: 10000 });
   const users = client.db('connect4').collection('user');
@@ -102,6 +102,29 @@ test('profile changes persist and logout invalidates the MongoDB session', { tim
   assert.deepEqual(saved.stats, original.stats);
   assert.equal((await (await request('GET', '/api/user/me', oldToken)).json()).displayName, 'Updated player');
 
+  assert.equal((await request('POST', '/api/results', null, { result: 'win' })).status, 401);
+  assert.equal((await request('POST', '/api/results', oldToken, { result: 'invalid' })).status, 400);
+  assert.deepEqual((await users.findOne({ email })).stats, original.stats);
+  const outcomes = [
+    ['win', { wins: 1, losses: 0, draws: 0, currentWinStreak: 1 }],
+    ['win', { wins: 2, losses: 0, draws: 0, currentWinStreak: 2 }],
+    ['loss', { wins: 2, losses: 1, draws: 0, currentWinStreak: 0 }],
+    ['win', { wins: 3, losses: 1, draws: 0, currentWinStreak: 1 }],
+    ['draw', { wins: 3, losses: 1, draws: 1, currentWinStreak: 0 }],
+  ];
+  for (const [result, expected] of outcomes) {
+    const response = await request('POST', '/api/results', oldToken, { result, email: 'someone-else@example.com' });
+    assert.equal(response.status, 200);
+    assert.deepEqual(await response.json(), expected);
+    assert.deepEqual((await users.findOne({ email })).stats, expected);
+  }
+  // Simultaneous updates must not overwrite one another's counters or streaks.
+  const concurrent = await Promise.all(Array.from({ length: 10 }, () => request('POST', '/api/results', oldToken, { result: 'win' })));
+  assert.ok(concurrent.every(response => response.status === 200));
+  const expectedStats = { wins: 13, losses: 1, draws: 1, currentWinStreak: 10 };
+  assert.deepEqual((await users.findOne({ email })).stats, expectedStats);
+  assert.deepEqual(await (await request('GET', '/api/stats', oldToken)).json(), expectedStats);
+
   const logout = await request('DELETE', '/api/auth', oldToken);
   assert.equal(logout.status, 200);
   assert.match(logout.headers.get('set-cookie'), /token=;/);
@@ -119,5 +142,6 @@ test('profile changes persist and logout invalidates the MongoDB session', { tim
   assert.equal((await users.findOne({ email })).token, newToken);
   assert.equal((await request('GET', '/api/user/me', newToken)).status, 200);
   assert.equal((await request('GET', '/api/stats', newToken)).status, 200);
+  assert.deepEqual(await (await request('GET', '/api/stats', newToken)).json(), expectedStats);
   assert.equal((await request('GET', '/api/stats', oldToken)).status, 401);
 });
