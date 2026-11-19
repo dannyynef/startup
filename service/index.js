@@ -82,6 +82,7 @@ app.put('/api/user/me', async (req, res) => {
     return res.status(400).send({ msg: 'Username must contain 1 to 40 characters.' });
   }
 
+  await DB.updateDisplayName(user.email, displayName.trim());
   user.displayName = displayName.trim();
   res.send(publicProfile(user));
 });

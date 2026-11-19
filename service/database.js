@@ -40,4 +40,8 @@ async function removeUserToken(token) {
   await userCollection.updateOne({ token }, { $unset: { token: 1 } });
 }
 
-module.exports = { connect, db, getUser, addUser, getUserByToken, setUserToken, removeUserToken };
+async function updateDisplayName(email, displayName) {
+  await userCollection.updateOne({ email }, { $set: { displayName } });
+}
+
+module.exports = { connect, db, getUser, addUser, getUserByToken, setUserToken, removeUserToken, updateDisplayName };

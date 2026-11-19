@@ -50,3 +50,9 @@ Interesting things I have learned about React
 - The test starts a separate backend on an available port and creates a temporary account. It checks that logout removes the token from MongoDB, clears the cookie, and makes the old token fail on session and statistics endpoints.
 - Repeated logout succeeds, and a fresh login creates a different token that can access protected endpoints. The old token remains invalid.
 - The integration test passed against Atlas. It removes its temporary account and stops its backend afterward.
+
+## MongoDB player profiles
+
+- Username edits now update the authenticated account in MongoDB before the server confirms the change. The client cannot choose another account by sending an email.
+- Username validation still requires 1 to 40 characters after trimming. The database update changes only `displayName`, preserving credentials and statistics.
+- The Atlas integration check now verifies the saved username directly in MongoDB, through a fresh profile request, and after logging out and logging back in. It also checks invalid and unauthenticated edits.
