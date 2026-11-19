@@ -138,9 +138,21 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits)
-- [ ] **Stores data in MongoDB** - I did not complete this part of the deliverable.
-- [ ] **Stores credentials in MongoDB** - I did not complete this part of the deliverable.
+- [x] I completed the prerequisites for this deliverable (Simon DB deployed, GitHub link on the home page, and incremental Git commits).
+- [x] **Stores data in MongoDB** - `service/database.js` connects to the `connect4` database in MongoDB Atlas. Player usernames, join dates, wins, losses, draws, and win streaks persist across backend restarts. Profile edits save to the authenticated account, and game results use atomic database updates.
+- [x] **Stores credentials in MongoDB** - Registration saves accounts with BCrypt password hashes. Login reads those accounts and stores UUID authentication tokens in MongoDB. Secure, HTTP-only cookies identify users on protected endpoints. Logout removes the stored token. Password hashes and tokens are excluded from profile responses.
+
+Verification: `cd service` and run `npm run test:integration`. This passed against Atlas, including account creation, password hashing, profile edits, all game outcomes, concurrent updates, a backend restart, login, logout, and rejection of invalid credentials and tokens. The test creates and removes a temporary account. The frontend production build also passed.
+
+Deployed to [startup.connect4.click](https://startup.connect4.click) on November 18, 2026. HTTPS checks run from the production server passed for the frontend, registration, saved username and game result, logout, rejection of the old token, and login with saved data. The temporary verification account was removed.
+
+### DB deployment and submission
+
+1. Install frontend dependencies with `npm ci` in the repository root and backend dependencies with `npm ci` in `service`.
+2. Provide `service/dbConfig.json` with the Atlas `hostname`, `userName`, and `password`. This file is ignored by Git. Use Node.js 22 or later and allow the development and production hosts to connect to Atlas.
+3. From the repository root, deploy with `./deployService.sh -k <path-to-production.pem> -h connect4.click -s startup`. The script copies the database module, backend dependencies, and private configuration alongside the bundled frontend.
+4. At [startup.connect4.click](https://startup.connect4.click), create an account, edit its username, finish a game, log out, and log back in. Confirm the saved profile and statistics appear.
+5. Push the final approved commits to [GitHub](https://github.com/dannyynef/startup). Submit the deployed startup URL to Canvas and the repository URL to the MasteryLS GitHub submission.
 
 ## 🚀 WebSocket deliverable
 

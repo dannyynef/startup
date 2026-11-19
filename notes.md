@@ -2,8 +2,8 @@
 
 This file represents what I have learned about web programming.
 
-- [My startup](https://startup.cs260.click)
-- [My simon](https://simon.cs260.click)
+- [My startup](https://startup.connect4.click)
+- [My simon](https://simon.connect4.click)
 
 ## Helpful links
 
@@ -70,3 +70,12 @@ Interesting things I have learned about React
 - The test now stops the backend and starts a new process, then confirms that the saved token, username, and statistics still work. It also logs in to the saved account after the restart.
 - Verified password hashing, duplicate-account rejection, normalized login emails, wrong passwords, unknown accounts, and invalid tokens against Atlas.
 - The complete integration check passed, and the temporary account was removed. The frontend production build also passed, with React Router module directive warnings.
+
+## DB deployment
+
+- Completed the README DB checklist with implementation details, test instructions, and deployment and submission steps.
+- Deployed the DB deliverable to `https://startup.connect4.click` on November 18, 2026 using `deployService.sh`. The production service runs on Node.js 22 and connects to Atlas.
+- Verified HTTPS registration, saved username and game statistics, logout, rejection of the old token, and a fresh login from the production server. The temporary verification account was removed.
+- Direct HTTPS requests from the development automation environment were reset, while HTTPS checks from the production server passed. A manual browser check is still useful before submission.
+- `service/dbConfig.json` remains ignored and untracked. It is deployed with backend files and is not placed in the public frontend directory.
+- The final documentation commit and push await approval; submission to Canvas and MasteryLS remains to be done.
