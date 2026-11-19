@@ -22,7 +22,7 @@ app.post('/api/auth', async (req, res) => {
     }
 
     const user = await createUser(normalizedEmail, password);
-    setAuthCookie(res, user);
+    await setAuthCookie(res, user);
 
     res.send(publicProfile(user));
   } catch (error) {
@@ -35,9 +35,14 @@ app.post('/api/auth', async (req, res) => {
 });
 
 app.put('/api/auth', async (req, res) => {
-  const user = await getUser('email', req.body.email);
-  if (user && (await bcrypt.compare(req.body.password, user.password))) {
-    setAuthCookie(res, user);
+  const { email, password } = req.body || {};
+  if (typeof email !== 'string' || !email.trim() || typeof password !== 'string' || !password) {
+    return res.status(400).send({ msg: 'Email and password are required.' });
+  }
+
+  const user = await getUser('email', email.trim().toLowerCase());
+  if (user && (await bcrypt.compare(password, user.password))) {
+    await setAuthCookie(res, user);
 
     res.send(publicProfile(user));
   } else {
@@ -47,10 +52,10 @@ app.put('/api/auth', async (req, res) => {
 
 app.delete('/api/auth', async (req, res) => {
   const token = req.cookies['token'];
-  const user = await getUser('token', token);
-  if (user) {
-    clearAuthCookie(res, user);
+  if (typeof token === 'string' && token) {
+    await DB.removeUserToken(token);
   }
+  res.clearCookie('token');
 
   res.send({});
 });
@@ -116,8 +121,6 @@ function publicProfile(user) {
   return { email: user.email, displayName: user.displayName, joined: user.joined };
 }
 
-const users = [];
-
 async function createUser(email, password) {
   const passwordHash = await bcrypt.hash(password, 10);
 
@@ -130,32 +133,24 @@ async function createUser(email, password) {
   };
 
   await DB.addUser(user);
-  // Keep existing login and session behavior until database authentication is added.
-  users.push(user);
 
   return user;
 }
 
 async function getUser(field, value) {
-  if (value) {
-    return users.find((user) => user[field] === value);
-  }
-  return null;
+  if (typeof value !== 'string' || !value) return null;
+  return field === 'token' ? DB.getUserByToken(value) : DB.getUser(value);
 }
 
-function setAuthCookie(res, user) {
-  user.token = uuid.v4();
+async function setAuthCookie(res, user) {
+  const token = uuid.v4();
+  await DB.setUserToken(user.email, token);
 
-  res.cookie('token', user.token, {
+  res.cookie('token', token, {
     secure: true,
     httpOnly: true,
     sameSite: 'strict',
   });
-}
-
-function clearAuthCookie(res, user) {
-  delete user.token;
-  res.clearCookie('token');
 }
 
 // Keep unknown API requests from falling through to the React application.

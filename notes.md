@@ -35,3 +35,11 @@ Interesting things I have learned about React
 - Registration checks the MongoDB `user` collection for an existing email and saves new accounts with BCrypt password hashes, profile fields, and initial statistics.
 - Emails are trimmed and lowercased. A unique email index prevents duplicate accounts, including simultaneous registration attempts.
 - Login and sessions still use the temporary in-memory array until the next step. Registered accounts are saved in MongoDB, but logging in after a restart will work once database authentication is added.
+
+## MongoDB authentication
+
+- Login now reads saved accounts from MongoDB and verifies BCrypt password hashes. Email normalization matches registration.
+- Registration and login save a new UUID token in MongoDB before sending the secure, HTTP-only cookie. Session checks and protected endpoints retrieve the account by that token.
+- The in-memory user array is removed. Accounts and authentication tokens can now be retrieved after a backend restart.
+- Logout removes the stored token and clears the cookie. This was moved forward from the logout step so that switching token lookups to MongoDB does not leave logged-out tokens valid.
+- Profile edits and game statistics still need their database writes in the later steps.

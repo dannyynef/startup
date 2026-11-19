@@ -28,4 +28,16 @@ async function addUser(user) {
   await userCollection.insertOne(user);
 }
 
-module.exports = { connect, db, getUser, addUser };
+function getUserByToken(token) {
+  return userCollection.findOne({ token });
+}
+
+async function setUserToken(email, token) {
+  await userCollection.updateOne({ email }, { $set: { token } });
+}
+
+async function removeUserToken(token) {
+  await userCollection.updateOne({ token }, { $unset: { token: 1 } });
+}
+
+module.exports = { connect, db, getUser, addUser, getUserByToken, setUserToken, removeUserToken };
